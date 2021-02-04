@@ -1,3 +1,8 @@
+sticker
+partial_sticker
+moving_sticker
+non_descript
+sticker_no_qr
 dog
 person
 cat
