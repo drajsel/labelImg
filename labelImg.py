@@ -118,6 +118,15 @@ class MainWindow(QMainWindow, WindowMixin):
         listLayout = QVBoxLayout()
         listLayout.setContentsMargins(0, 0, 0, 0)
 
+        # Create a widget for identifying annotator
+        self.annotatorID = QLabel(getStr('annotatorID'))
+        self.annotatorIDText = QLineEdit()
+        annotatorQHBoxLayout = QHBoxLayout()
+        annotatorQHBoxLayout.addWidget(self.annotatorID)
+        annotatorQHBoxLayout.addWidget(self.annotatorIDText)
+        annotatorIDContainer = QWidget()
+        annotatorIDContainer.setLayout(annotatorQHBoxLayout)
+
         # Create a widget for using default label
         self.useDefaultLabelCheckbox = QCheckBox(getStr('useDefaultLabel'))
         self.useDefaultLabelCheckbox.setChecked(False)
@@ -137,6 +146,7 @@ class MainWindow(QMainWindow, WindowMixin):
 
         # Add some of widgets to listLayout
         listLayout.addWidget(self.editButton)
+        listLayout.addWidget(annotatorIDContainer)
         listLayout.addWidget(self.diffcButton)
         listLayout.addWidget(useDefaultLabelContainer)
 
@@ -849,8 +859,11 @@ class MainWindow(QMainWindow, WindowMixin):
             if self.labelFileFormat == LabelFileFormat.PASCAL_VOC:
                 if annotationFilePath[-4:].lower() != ".xml":
                     annotationFilePath += XML_EXT
+
                 self.labelFile.savePascalVocFormat(annotationFilePath, shapes, self.filePath, self.imageData,
-                                                   self.lineColor.getRgb(), self.fillColor.getRgb())
+                                                   self.lineColor.getRgb(), self.fillColor.getRgb(),
+                                                   annotator_id=self.annotatorIDText.text()
+                                                   )
             elif self.labelFileFormat == LabelFileFormat.YOLO:
                 if annotationFilePath[-4:].lower() != ".txt":
                     annotationFilePath += TXT_EXT
